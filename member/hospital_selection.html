@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediBuddy - Hospital Selection</title>
+<style>
+  * {margin:0; padding:0; box-sizing:border-box; font-family: "Segoe UI", sans-serif;}
+  body {background:#f5f7fa; color:#333;}
+
+  /* Header */
+  header {display:flex; justify-content:space-between; align-items:center; background:#0B3D91; color:#fff; padding:1rem 2rem; position:sticky; top:0; z-index:100;}
+  header .logo {font-size:1.6rem; font-weight:bold;}
+  header .nav-right {display:flex; gap:1rem; align-items:center;}
+  header .nav-right div {cursor:pointer;}
+
+  /* Container */
+  .container {display:flex; min-height:calc(100vh - 70px);}
+
+  /* Sidebar */
+  .sidebar {width:220px; background:#fff; border-right:1px solid #ddd; padding:2rem 1rem; display:flex; flex-direction:column; gap:1rem;}
+  .sidebar a {padding:0.8rem 1rem; border-radius:6px; color:#0B3D91; font-weight:500;}
+  .sidebar a.active, .sidebar a:hover {background:#0B3D91; color:white;}
+
+  /* Main */
+  .main {flex:1; padding:2rem; overflow-y:auto;}
+  .page-header h2 {color:#0B3D91; font-size:1.8rem; margin-bottom:0.3rem;}
+  .page-header p {font-size:0.95rem; color:#555;}
+
+  /* Search Filter */
+  .filter-section {background:#fff; padding:1.5rem; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.05); margin-top:1rem;}
+  .filter-grid {display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:1rem; margin-top:1rem;}
+  .filter-section input, .filter-section select {width:100%; padding:0.6rem; border-radius:5px; border:1px solid #ccc;}
+  .filter-section button {padding:0.7rem; background:#0B3D91; border:none; border-radius:5px; color:white; cursor:pointer; font-weight:600;}
+  .filter-section button:hover {background:#1A73E8;}
+
+  /* Results */
+  .results {margin-top:2rem;}
+  .results h3 {margin-bottom:1rem; color:#0B3D91;}
+  .hospital-card {background:white; border-radius:10px; padding:1rem 1.2rem; box-shadow:0 2px 8px rgba(0,0,0,0.05); margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;}
+  .hospital-info {max-width:70%;}
+  .hospital-info h4 {margin-bottom:0.2rem; color:#0B3D91;}
+  .hospital-info p {font-size:0.9rem; color:#555;}
+  .status {font-weight:bold; color:green;}
+  .btn {padding:0.5rem 1rem; border:none; border-radius:5px; background:#0B3D91; color:white; cursor:pointer;}
+  .btn:hover {background:#1A73E8;}
+
+  /* Modal */
+  .modal {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center;}
+  .modal-content {background:white; border-radius:10px; padding:2rem; width:90%; max-width:500px; box-shadow:0 4px 10px rgba(0,0,0,0.2);}
+  .modal-content h3 {color:#0B3D91; margin-bottom:0.5rem;}
+  .modal-content p {margin:0.3rem 0;}
+  .modal-content .actions {display:flex; justify-content:end; gap:1rem; margin-top:1.5rem;}
+  .modal-content .btn-cancel {background:#aaa;}
+  .modal-content .btn-cancel:hover {background:#888;}
+
+  /* Footer */
+  footer {text-align:center; padding:1rem 0; color:#666; font-size:0.9rem; background:#fff; margin-top:2rem;}
+
+  /* Responsive */
+  @media(max-width:768px){
+    .container {flex-direction:column;}
+    .sidebar {width:100%; flex-direction:row; overflow-x:auto;}
+    .sidebar a {flex:1; text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">MediBuddy</div>
+  <div class="nav-right">
+    <div>🔍</div>
+    <div>🔔</div>
+    <div>👤</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <a href="#">Dashboard</a>
+    <a href="#" class="active">Network Hospitals</a>
+    <a href="#">Request Cashless</a>
+    <a href="#">Active Policies</a>
+    <a href="#">Claims Summary</a>
+    <a href="#">Support</a>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="page-header">
+      <h2>Find Network Hospitals</h2>
+      <p>Search from 13,000+ hospitals across India for cashless treatments.</p>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <h3>Search & Filter</h3>
+      <div class="filter-grid">
+        <input type="text" id="hospitalName" placeholder="Hospital name or keyword">
+        <select id="city">
+          <option value="">Select City</option>
+          <option value="Bangalore">Bangalore</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Delhi">Delhi</option>
+        </select>
+        <select id="specialty">
+          <option value="">Specialty</option>
+          <option value="General">General</option>
+          <option value="Cardiology">Cardiology</option>
+          <option value="Orthopedic">Orthopedic</option>
+        </select>
+        <select id="type">
+          <option value="">Hospital Type</option>
+          <option value="Private">Private</option>
+          <option value="Public">Public</option>
+        </select>
+        <button id="searchBtn">Search</button>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results">
+      <h3>Search Results</h3>
+      <div id="resultsContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="hospitalModal">
+  <div class="modal-content">
+    <h3 id="modalName">Hospital Name</h3>
+    <p id="modalAddress">Address: -</p>
+    <p id="modalContact">Contact: -</p>
+    <p id="modalNetwork">Network: -</p>
+    <p id="modalFacilities">Facilities: -</p>
+    <div class="actions">
+      <button class="btn btn-cancel" id="closeModal">Close</button>
+      <button class="btn" id="selectHospital">Select Hospital</button>
+    </div>
+  </div>
+</div>
+
+<footer>© 2025 MediBuddy / Medi Assist. All Rights Reserved.</footer>
+
+<script>
+  // Mock hospital data
+  const hospitals = [
+    { name: "Fortis Hospital", city: "Bangalore", specialty: "Cardiology", type: "Private", address: "Bannerghatta Road, Bangalore", contact: "080 6621 4444", network: true, facilities: "ICU, 24x7 Pharmacy, Diagnostics" },
+    { name: "Apollo Clinic", city: "Bangalore", specialty: "General", type: "Private", address: "Koramangala, Bangalore", contact: "080 4011 5000", network: true, facilities: "Diagnostics, Pharmacy" },
+    { name: "AIIMS Hospital", city: "Delhi", specialty: "Orthopedic", type: "Public", address: "Ansari Nagar, New Delhi", contact: "011 2658 8500", network: false, facilities: "ICU, Trauma Center" },
+    { name: "Lilavati Hospital", city: "Mumbai", specialty: "General", type: "Private", address: "Bandra Reclamation, Mumbai", contact: "022 2675 1000", network: true, facilities: "ICU, OT, Diagnostics" },
+  ];
+
+  const resultsContainer = document.getElementById('resultsContainer');
+  const modal = document.getElementById('hospitalModal');
+  const closeModal = document.getElementById('closeModal');
+  const selectHospital = document.getElementById('selectHospital');
+
+  const modalName = document.getElementById('modalName');
+  const modalAddress = document.getElementById('modalAddress');
+  const modalContact = document.getElementById('modalContact');
+  const modalNetwork = document.getElementById('modalNetwork');
+  const modalFacilities = document.getElementById('modalFacilities');
+
+  let selectedHospital = null;
+
+  document.getElementById('searchBtn').addEventListener('click', () => {
+    const name = document.getElementById('hospitalName').value.toLowerCase();
+    const city = document.getElementById('city').value;
+    const specialty = document.getElementById('specialty').value;
+    const type = document.getElementById('type').value;
+
+    const filtered = hospitals.filter(h =>
+      (!name || h.name.toLowerCase().includes(name)) &&
+      (!city || h.city === city) &&
+      (!specialty || h.specialty === specialty) &&
+      (!type || h.type === type)
+    );
+
+    renderResults(filtered);
+  });
+
+  function renderResults(list){
+    resultsContainer.innerHTML = '';
+    if(list.length === 0){
+      resultsContainer.innerHTML = '<p>No hospitals found. Try adjusting filters.</p>';
+      return;
+    }
+    list.forEach(h => {
+      const card = document.createElement('div');
+      card.className = 'hospital-card';
+      card.innerHTML = `
+        <div class="hospital-info">
+          <h4>${h.name}</h4>
+          <p>${h.address}</p>
+          <p>${h.city} | ${h.specialty} | ${h.type}</p>
+          <p class="status">${h.network ? "✅ Cashless Available" : "❌ Not in Network"}</p>
+        </div>
+        <button class="btn viewDetails">View Details</button>
+      `;
+      card.querySelector('.viewDetails').addEventListener('click', () => openModal(h));
+      resultsContainer.appendChild(card);
+    });
+  }
+
+  function openModal(hospital){
+    selectedHospital = hospital;
+    modalName.textContent = hospital.name;
+    modalAddress.textContent = "Address: " + hospital.address;
+    modalContact.textContent = "Contact: " + hospital.contact;
+    modalNetwork.textContent = "Network: " + (hospital.network ? "Yes (Cashless)" : "No");
+    modalFacilities.textContent = "Facilities: " + hospital.facilities;
+    modal.style.display = 'flex';
+  }
+
+  closeModal.addEventListener('click', () => modal.style.display = 'none');
+  selectHospital.addEventListener('click', () => {
+    modal.style.display = 'none';
+    alert(`Hospital "${selectedHospital.name}" selected successfully!\nProceeding to Cashless Request page...`);
+    window.location.href = "#"; // Replace with actual redirect to Cashless Request page
+  });
+</script>
+
+</body>
+</html>
