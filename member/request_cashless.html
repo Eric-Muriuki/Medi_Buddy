@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediBuddy - Request Cashless Hospitalization</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
+  body { background:#f5f7fa; color:#333; }
+  a { text-decoration:none; color:#0B3D91; }
+
+  /* Header */
+  header { display:flex; justify-content: space-between; align-items:center; padding:1rem 2rem; background:#0B3D91; color:white; position: sticky; top:0; z-index:100; }
+  header .logo { font-size:1.5rem; font-weight:bold; }
+  header .nav-right { display:flex; align-items:center; gap:1rem; }
+  header .nav-right div { cursor:pointer; position:relative; }
+  header .nav-right div .badge { position:absolute; top:-5px; right:-10px; background:red; color:white; font-size:0.7rem; padding:2px 5px; border-radius:50%; }
+
+  /* Container */
+  .container { display:flex; min-height: calc(100vh - 70px); padding-bottom:2rem; }
+
+  /* Sidebar */
+  .sidebar { width:220px; background:#fff; border-right:1px solid #ddd; padding:2rem 1rem; display:flex; flex-direction:column; gap:1rem; }
+  .sidebar a { padding:0.8rem 1rem; border-radius:5px; color:#0B3D91; font-weight:500; display:block; }
+  .sidebar a.active, .sidebar a:hover { background:#0B3D91; color:white; }
+
+  /* Main */
+  .main { flex:1; padding:2rem; display:flex; flex-direction:column; gap:1.5rem; }
+
+  /* Page Header */
+  .page-header { margin-bottom:1rem; }
+  .page-header h2 { color:#0B3D91; font-size:1.8rem; margin-bottom:0.3rem; }
+  .page-header p { font-size:0.95rem; color:#555; }
+
+  /* Form Sections */
+  .form-section { background:#fff; padding:1.5rem; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.05); }
+  .form-section h3 { color:#0B3D91; margin-bottom:0.5rem; }
+  .form-section label { display:block; margin-top:0.8rem; margin-bottom:0.3rem; font-weight:500; }
+  .form-section input, .form-section select, .form-section textarea { width:100%; padding:0.6rem; border-radius:5px; border:1px solid #ccc; }
+  .form-section input[type="file"] { padding:0.3rem; }
+  .form-section textarea { resize:vertical; min-height:60px; }
+
+  /* Upload List */
+  .upload-list { margin-top:0.5rem; font-size:0.85rem; color:#555; }
+
+  /* Buttons */
+  .btn { margin-top:1rem; padding:0.7rem 1rem; border:none; border-radius:5px; background:#0B3D91; color:white; cursor:pointer; font-weight:bold; }
+  .btn:hover { background:#1A73E8; }
+
+  /* Summary */
+  .summary { background:#eef3fc; padding:1rem; border-radius:10px; }
+  .summary p { margin-bottom:0.5rem; }
+
+  /* Alerts */
+  .alert { background:#f8d7da; color:#842029; padding:0.8rem; border-radius:5px; margin-bottom:1rem; border:1px solid #f5c2c7; display:none; }
+
+  /* Footer */
+  footer { text-align:center; padding:1.5rem 0; font-size:0.9rem; color:#666; margin-top:2rem; }
+
+  /* Responsive */
+  @media(max-width:768px){
+    .container { flex-direction:column; }
+    .sidebar { width:100%; flex-direction:row; overflow-x:auto; }
+    .sidebar a { flex:1; text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="logo">MediBuddy</div>
+  <div class="nav-right">
+    <div class="notifications-icon">🔔 <span class="badge">2</span></div>
+    <div class="profile">👤</div>
+  </div>
+</header>
+
+<!-- Container -->
+<div class="container">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <a href="#">Dashboard</a>
+    <a href="#" class="active">Request Cashless</a>
+    <a href="#">Active Policies</a>
+    <a href="#">Past Requests</a>
+    <a href="#">Network Hospitals</a>
+    <a href="#">Claims Summary</a>
+    <a href="#">Support</a>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2>Request Cashless Hospitalization</h2>
+      <p>Submit your hospitalization request to get pre-authorization from your insurer. Fill in all details accurately.</p>
+    </div>
+
+    <!-- Alerts -->
+    <div class="alert" id="alertMsg"></div>
+
+    <!-- Policy Selection -->
+    <div class="form-section">
+      <h3>Policy Selection</h3>
+      <label for="policySelect">Select Policy</label>
+      <select id="policySelect">
+        <option value="">-- Select Policy --</option>
+        <option value="H123456789">Health Insurance Plan - H123456789</option>
+        <option value="F987654321">Family Floater Plan - F987654321</option>
+      </select>
+      <p id="coverageInfo" style="margin-top:0.5rem; font-size:0.9rem; color:#555;"></p>
+    </div>
+
+    <!-- Hospital Selection -->
+    <div class="form-section">
+      <h3>Hospital Selection</h3>
+      <label for="hospitalInput">Select Hospital</label>
+      <input type="text" id="hospitalInput" placeholder="Search hospital by name or city">
+      <p id="networkInfo" style="margin-top:0.5rem; font-size:0.9rem; color:#555;"></p>
+    </div>
+
+    <!-- Patient & Admission Details -->
+    <div class="form-section">
+      <h3>Patient & Admission Details</h3>
+      <label for="patientName">Patient Name</label>
+      <input type="text" id="patientName" placeholder="Enter patient name">
+
+      <label for="admissionDate">Date of Admission</label>
+      <input type="date" id="admissionDate">
+
+      <label for="estimatedCost">Estimated Cost</label>
+      <input type="number" id="estimatedCost" placeholder="Enter estimated hospitalization cost">
+
+      <label for="diagnosis">Doctor's Prescription / Diagnosis</label>
+      <textarea id="diagnosis" placeholder="Enter brief diagnosis or symptoms"></textarea>
+    </div>
+
+    <!-- Document Uploads -->
+    <div class="form-section">
+      <h3>Supporting Documents</h3>
+      <label for="docPrescription">Doctor's Prescription</label>
+      <input type="file" id="docPrescription">
+
+      <label for="docReports">Diagnostic Reports</label>
+      <input type="file" id="docReports">
+
+      <label for="docID">ID Proof</label>
+      <input type="file" id="docID">
+
+      <label for="docPolicy">Policy Copy</label>
+      <input type="file" id="docPolicy">
+
+      <div class="upload-list" id="uploadList">No files uploaded yet.</div>
+    </div>
+
+    <!-- Summary & Submit -->
+    <div class="form-section summary">
+      <h3>Summary & Confirmation</h3>
+      <p id="summaryPolicy">Policy: -</p>
+      <p id="summaryHospital">Hospital: -</p>
+      <p id="summaryPatient">Patient Name: -</p>
+      <p id="summaryDate">Admission Date: -</p>
+      <p id="summaryCost">Estimated Cost: -</p>
+      <p id="summaryDiagnosis">Diagnosis: -</p>
+      <button class="btn" id="submitRequest">Submit Cashless Request</button>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  © 2025 MediBuddy / Medi Assist. All Rights Reserved.
+</footer>
+
+<script>
+  const policySelect = document.getElementById('policySelect');
+  const coverageInfo = document.getElementById('coverageInfo');
+  const hospitalInput = document.getElementById('hospitalInput');
+  const networkInfo = document.getElementById('networkInfo');
+  const patientName = document.getElementById('patientName');
+  const admissionDate = document.getElementById('admissionDate');
+  const estimatedCost = document.getElementById('estimatedCost');
+  const diagnosis = document.getElementById('diagnosis');
+  const uploadList = document.getElementById('uploadList');
+  const submitRequest = document.getElementById('submitRequest');
+  const alertMsg = document.getElementById('alertMsg');
+
+  const summaryPolicy = document.getElementById('summaryPolicy');
+  const summaryHospital = document.getElementById('summaryHospital');
+  const summaryPatient = document.getElementById('summaryPatient');
+  const summaryDate = document.getElementById('summaryDate');
+  const summaryCost = document.getElementById('summaryCost');
+  const summaryDiagnosis = document.getElementById('summaryDiagnosis');
+
+  const uploadedFiles = [];
+
+  // Example hospital network
+  const networkHospitals = ["Fortis Hospital", "Apollo Clinic", "Manipal Hospital"];
+
+  // Example policy coverage
+  const policyCoverage = {
+    "H123456789": "Coverage: ₹5,00,000, Remaining: ₹4,50,000",
+    "F987654321": "Coverage: ₹10,00,000, Remaining: ₹9,00,000"
+  };
+
+  policySelect.addEventListener('change', () => {
+    const val = policySelect.value;
+    coverageInfo.textContent = policyCoverage[val] || '';
+    summaryPolicy.textContent = "Policy: " + (val || '-');
+  });
+
+  hospitalInput.addEventListener('input', () => {
+    const val = hospitalInput.value;
+    networkInfo.textContent = networkHospitals.includes(val) ? "✅ Network Hospital (Cashless Available)" : "❌ Not in Network";
+    summaryHospital.textContent = "Hospital: " + (val || '-');
+  });
+
+  patientName.addEventListener('input', () => summaryPatient.textContent = "Patient Name: " + (patientName.value || '-'));
+  admissionDate.addEventListener('input', () => summaryDate.textContent = "Admission Date: " + (admissionDate.value || '-'));
+  estimatedCost.addEventListener('input', () => summaryCost.textContent = "Estimated Cost: " + (estimatedCost.value || '-'));
+  diagnosis.addEventListener('input', () => summaryDiagnosis.textContent = "Diagnosis: " + (diagnosis.value || '-'));
+
+  const fileInputs = [document.getElementById('docPrescription'), document.getElementById('docReports'), document.getElementById('docID'), document.getElementById('docPolicy')];
+  fileInputs.forEach(input => {
+    input.addEventListener('change', (e) => {
+      const files = Array.from(e.target.files);
+      files.forEach(f => uploadedFiles.push(f.name));
+      uploadList.textContent = uploadedFiles.length ? uploadedFiles.join(', ') : 'No files uploaded yet.';
+    });
+  });
+
+  submitRequest.addEventListener('click', () => {
+    if(!policySelect.value || !hospitalInput.value || !patientName.value || !admissionDate.value || !estimatedCost.value || !diagnosis.value || uploadedFiles.length < 1){
+      alertMsg.style.display = 'block';
+      alertMsg.textContent = 'Please fill all required fields and upload necessary documents.';
+      return;
+    }
+    alertMsg.style.display = 'none';
+    const preAuthId = "PA" + Math.floor(Math.random()*1000000);
+    alert(`Cashless request submitted successfully!\nPre-Authorization ID: ${preAuthId}`);
+  });
+</script>
+
+</body>
+</html>

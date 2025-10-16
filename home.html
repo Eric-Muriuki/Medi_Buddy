@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediBuddy / Medi Assist Portal</title>
+<style>
+  /* Reset and Base */
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+  body { line-height: 1.6; color: #333; }
+  a { text-decoration: none; color: inherit; }
+
+  /* Header */
+  header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: #0B3D91; color: white; }
+  header .logo { font-size: 1.5rem; font-weight: bold; }
+  nav a { margin-left: 1.5rem; color: white; font-weight: 500; }
+  header .cta-btn { background: #FFD700; color: #0B3D91; padding: 0.5rem 1rem; border-radius: 5px; font-weight: bold; }
+
+  /* Hero Section */
+  .hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 4rem 2rem; margin-top: 2rem; background: linear-gradient(135deg, #0B3D91, #1A73E8); color: white; }
+  .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+  .hero p { font-size: 1.2rem; margin-bottom: 2rem; }
+  .hero .hero-buttons button { background: #FFD700; border: none; color: #0B3D91; padding: 0.8rem 1.5rem; margin: 0.5rem; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+  /* Sections */
+  section { padding: 4rem 2rem; max-width: 1200px; margin: auto; }
+  section h2 { text-align: center; margin-bottom: 2rem; font-size: 2rem; color: #0B3D91; }
+
+  /* Features */
+  .features { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; }
+  .feature-card { flex: 1 1 220px; background: #F5F5F5; padding: 2rem; border-radius: 10px; text-align: center; }
+  .feature-card h3 { margin-bottom: 1rem; color: #0B3D91; }
+  .feature-card p { font-size: 0.95rem; }
+
+  /* How It Works */
+  .process { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; text-align: center; }
+  .process-step { flex: 1 1 200px; background: #E8F0FE; padding: 2rem; border-radius: 10px; }
+  .process-step h3 { margin-bottom: 1rem; color: #0B3D91; }
+  .process-step p { font-size: 0.95rem; }
+
+  /* Testimonials */
+  .testimonials { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; }
+  .testimonial-card { flex: 1 1 250px; background: #F5F5F5; padding: 2rem; border-radius: 10px; }
+  .testimonial-card p { font-style: italic; margin-bottom: 1rem; }
+  .testimonial-card h4 { font-weight: bold; color: #0B3D91; }
+
+  /* Partners */
+  .partners { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; }
+  .partners img { max-width: 150px; opacity: 0.8; transition: opacity 0.3s; }
+  .partners img:hover { opacity: 1; }
+
+  /* CTA Section */
+  .cta-section { display: inline-block; background: #0B3D91; color: white; text-align: center; padding: 4rem 2rem; border-radius: 10px; margin: 0; }
+  .cta-section button { background: #FFD700; border: none; color: #0B3D91; padding: 1rem 2rem; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 1rem; }
+
+  /* Footer */
+  footer { background: #0B3D91; color: white; padding: 3rem 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; }
+  footer div { flex: 1 1 200px; margin-bottom: 1.5rem; }
+  footer h4 { margin-bottom: 1rem; font-size: 1.1rem; }
+  footer a { display: block; margin-bottom: 0.5rem; color: white; font-size: 0.95rem; }
+  footer p { font-size: 0.85rem; }
+
+  /* Responsive */
+  @media(max-width:768px){
+    .features, .process, .testimonials, .partners { flex-direction: column; align-items: center; }
+    header { flex-direction: column; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="logo">MediBuddy</div>
+  <nav>
+    <a href="#features">Features</a>
+    <a href="#process">How It Works</a>
+    <a href="#wellness">Wellness</a>
+    <a href="#support">Support</a>
+    <a href="#partners">Partners</a>
+  </nav>
+  <a href="member/login.html">
+  <button class="cta-btn">Login</button>
+</a>
+
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+  <h1>Your Health. Simplified.</h1>
+  <p>Access your policy, raise cashless requests, and track claims — all in one place.</p>
+  <div class="hero-buttons">
+    <button>Login to Your Account</button>
+    <button>Find a Network Hospital</button>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section id="features">
+  <h2>Key Features</h2>
+  <div class="features">
+    <div class="feature-card">
+      <h3>Cashless Hospitalization</h3>
+      <p>Request preauthorization and track approval in real-time.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Policy & Coverage</h3>
+      <p>Access e-card, coverage limits, and benefits summary instantly.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Track & Manage Claims</h3>
+      <p>View claim status, upload bills, and download settlement details.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Support & Chatbot</h3>
+      <p>Get 24×7 assistance for any claim or policy query.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Wellness & Health Services</h3>
+      <p>Teleconsultations, diagnostics, and corporate wellness programs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="process">
+  <h2>How Cashless Hospitalization Works</h2>
+  <div class="process">
+    <div class="process-step">
+      <h3>1. Login & Choose Hospital</h3>
+      <p>Select from 13,000+ network hospitals.</p>
+    </div>
+    <div class="process-step">
+      <h3>2. Submit Request</h3>
+      <p>Upload doctor’s note and admission details.</p>
+    </div>
+    <div class="process-step">
+      <h3>3. Get Approval</h3>
+      <p>Track insurer approval via Medi Assist.</p>
+    </div>
+    <div class="process-step">
+      <h3>4. Treatment & Settlement</h3>
+      <p>Hospital gets paid directly — no hassle for you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Wellness Section -->
+<section id="wellness">
+  <h2>Wellness & Post-Claim Services</h2>
+  <div class="features">
+    <div class="feature-card">
+      <h3>Teleconsultations</h3>
+      <p>Talk to certified doctors anytime.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Diagnostics Booking</h3>
+      <p>Schedule lab tests from home.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Corporate Wellness</h3>
+      <p>Fitness, nutrition, and wellness programs.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Health Records</h3>
+      <p>View and manage your digital health vault.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section id="testimonials">
+  <h2>What Our Members Say</h2>
+  <div class="testimonials">
+    <div class="testimonial-card">
+      <p>“The cashless approval took just 30 minutes!”</p>
+      <h4>— Rajesh, Bengaluru</h4>
+    </div>
+    <div class="testimonial-card">
+      <p>“Smooth experience and great support!”</p>
+      <h4>— Ananya, Mumbai</h4>
+    </div>
+  </div>
+</section>
+
+<!-- Partners Section -->
+<section id="partners">
+  <h2>Our Partners</h2>
+  <div class="partners">
+    <img src="https://via.placeholder.com/150x50?text=Hospital1" alt="Hospital Partner">
+    <img src="https://via.placeholder.com/150x50?text=Hospital2" alt="Hospital Partner">
+    <img src="https://via.placeholder.com/150x50?text=Insurer1" alt="Insurer Partner">
+    <img src="https://via.placeholder.com/150x50?text=Corporate1" alt="Corporate Partner">
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <h2>Ready to Access Your Health Benefits?</h2>
+  <button>Login / Register</button>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div>
+    <h4>About</h4>
+    <a href="#">About MediBuddy</a>
+    <a href="#">Our Partners</a>
+    <a href="#">Careers</a>
+  </div>
+  <div>
+    <h4>For Members</h4>
+    <a href="#">Login</a>
+    <a href="#">Claims</a>
+    <a href="#">Network Hospitals</a>
+    <a href="#">Support</a>
+  </div>
+  <div>
+    <h4>For Employers</h4>
+    <a href="#">Corporate Login</a>
+    <a href="#">Partner with Us</a>
+    <a href="#">Resources</a>
+  </div>
+  <div>
+    <h4>Legal</h4>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Use</a>
+    <a href="#">Data Protection</a>
+  </div>
+</footer>
+
+<script>
+  // Smooth scroll for nav links
+  const links = document.querySelectorAll('nav a');
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
